@@ -1,3 +1,3 @@
 # run this script to close a session on your server
 # usage: su electrum -c "./kill_session ip:port"
-./run_electrum_ltc_server debug "dispatcher.request_dispatcher.sessions['$1'].stop()"
+./run_electrum_bynd_server debug "dispatcher.request_dispatcher.sessions['$1'].stop()"

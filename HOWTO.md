@@ -26,8 +26,8 @@ Conventions
 In this document, lines starting with a hash sign (#) or a dollar sign ($)
 contain commands. Commands starting with a hash should be run as root,
 commands starting with a dollar should be run as a normal user (in this
-document, we assume that user is called 'litecoin'). We also assume the
-litecoin user has sudo rights, so we use `$ sudo command` when we need to.
+document, we assume that user is called 'beyondcoin'). We also assume the
+beyondcoin user has sudo rights, so we use `$ sudo command` when we need to.
 
 Strings that are surrounded by "lower than" and "greater than" ( < and > )
 should be replaced by the user with something appropriate. For example,
@@ -60,16 +60,16 @@ Python libraries. Python 2.7 is the minimum supported version.
 
 **Hardware.** The lightest setup is a pruning server with disk space
 requirements of about 5 GB for the Electrum database (January 2017). However note that
-you also need to run litecoind and keep a copy of the full blockchain,
+you also need to run beyondcoind and keep a copy of the full blockchain,
 which is roughly 7 GB (January 2017). Ideally you have a machine with 4 GB of RAM
-and an equal amount of swap. If you have ~2 GB of RAM make sure you limit litecoind 
-to 8 concurrent connections by disabling incoming connections. electrum-ltc-server may
+and an equal amount of swap. If you have ~2 GB of RAM make sure you limit beyondcoind 
+to 8 concurrent connections by disabling incoming connections. electrum-bynd-server may
 bail-out on you from time to time with less than 2 GB of RAM, so you might have to 
 monitor the process and restart it. You can tweak cache sizes in the config to an extend
 but most RAM will be used to process blocks and catch-up on initial start.
 
-CPU speed is less important than fast I/O speed. electrum-ltc-server makes use of one core 
-only leaving spare cycles for litecoind. Fast single core CPU power helps for the initial 
+CPU speed is less important than fast I/O speed. electrum-bynd-server makes use of one core 
+only leaving spare cycles for beyondcoind. Fast single core CPU power helps for the initial 
 block chain import. Any multi-core x86 CPU with CPU Mark / PassMark > 1500 will work
 (see https://www.cpubenchmark.net/). An ideal setup in February 2016 has 4 GB+ RAM and
 SSD for good i/o speed.
@@ -77,80 +77,80 @@ SSD for good i/o speed.
 Instructions
 ------------
 
-### Step 1. Create a user for running litecoind and Electrum server
+### Step 1. Create a user for running beyondcoind and Electrum server
 
 This step is optional, but for better security and resource separation I
-suggest you create a separate user just for running `litecoind` and Electrum.
+suggest you create a separate user just for running `beyondcoind` and Electrum.
 We will also use the `~/bin` directory to keep locally installed files
 (others might want to use `/usr/local/bin` instead). We will download source
 code files to the `~/src` directory.
 
-    $ sudo adduser litecoin --disabled-password
+    $ sudo adduser beyondcoin --disabled-password
     $ sudo apt-get install git
-    $ sudo su - litecoin
+    $ sudo su - beyondcoin
     $ mkdir ~/bin ~/src
     $ echo $PATH
 
-If you don't see `/home/litecoin/bin` in the output, you should add this line
+If you don't see `/home/beyondcoin/bin` in the output, you should add this line
 to your `.bashrc`, `.profile`, or `.bash_profile`, then logout and relogin:
 
     PATH="$HOME/bin:$PATH"
     $ exit
 
-### Step 2. Download litecoind
+### Step 2. Download beyondcoind
 
-We currently recommend litecoin core 0.13.2.1 stable.
+We currently recommend beyondcoin core 0.16 stable.
 
-If you prefer to compile litecoind yourself, here are some pointers for Ubuntu:
+If you prefer to compile beyondcoind yourself, here are some pointers for Ubuntu:
 
     $ sudo apt-get install automake make bsdmainutils g++ python-leveldb libboost-all-dev libssl-dev libdb++-dev pkg-config libevent-dev
-    $ sudo su - litecoin
-    $ cd ~/src && git clone https://github.com/litecoin-project/litecoin.git -b master
-    $ cd litecoin
-    $ git checkout v0.13.2.1
+    $ sudo su - beyondcoin
+    $ cd ~/src && git clone https://github.com/beyondcoin-project/beyondcoin.git -b master
+    $ cd beyondcoin
+    $ git checkout v0.16
     $ ./autogen.sh
     $ ./configure --disable-wallet --without-miniupnpc
     $ make
-    $ strip src/litecoind src/litecoin-cli src/litecoin-tx
-    $ cp -a src/litecoind src/litecoin-cli src/litecoin-tx ~/bin
+    $ strip src/beyondcoind src/beyondcoin-cli src/beyondcoin-tx
+    $ cp -a src/beyondcoind src/beyondcoin-cli src/beyondcoin-tx ~/bin
 
-### Step 3. Configure and start litecoind
+### Step 3. Configure and start beyondcoind
 
-In order to allow Electrum to "talk" to `litecoind`, we need to set up an RPC
-username and password for `litecoind`. We will then start `litecoind` and
+In order to allow Electrum to "talk" to `beyondcoind`, we need to set up an RPC
+username and password for `beyondcoind`. We will then start `beyondcoind` and
 wait for it to complete downloading the blockchain.
 
-    $ mkdir ~/.litecoin
-    $ $EDITOR ~/.litecoin/litecoin.conf
+    $ mkdir ~/.beyondcoin
+    $ $EDITOR ~/.beyondcoin/beyondcoin.conf
 
-Write this in `litecoin.conf`:
+Write this in `beyondcoin.conf`:
 
     daemon=1
     txindex=1
     disablewallet=1
 
 rpcuser / rpcpassword options are only needed for non-localhost connections.
-you can consider setting maxconnections if you want to reduce litecoind bandwidth
+you can consider setting maxconnections if you want to reduce beyondcoind bandwidth
 (as stated above)
 
-If you have an existing installation of litecoind and have not previously
+If you have an existing installation of beyondcoind and have not previously
 set txindex=1 you need to reindex the blockchain by running
 
-    $ litecoind -reindex
+    $ beyondcoind -reindex
 
-If you already have a freshly indexed copy of the blockchain with txindex start `litecoind`:
+If you already have a freshly indexed copy of the blockchain with txindex start `beyondcoind`:
 
-    $ litecoind
+    $ beyondcoind
 
-Allow some time to pass, so `litecoind` connects to the network and starts
+Allow some time to pass, so `beyondcoind` connects to the network and starts
 downloading blocks. You can check its progress by running:
 
-    $ litecoin-cli getinfo
+    $ beyondcoin-cli getinfo
 
-Before starting the Electrum server your litecoind should have processed all
+Before starting the Electrum server your beyondcoind should have processed all
 blocks and caught up to the current height of the network (not just the headers).
-You should also set up your system to automatically start litecoind at boot
-time, running as the 'litecoin' user. Check your system documentation to
+You should also set up your system to automatically start beyondcoind at boot
+time, running as the 'beyondcoin' user. Check your system documentation to
 find out the best way to do this.
 
 ### Step 4. Download and install Electrum server
@@ -158,8 +158,8 @@ find out the best way to do this.
 We will download the latest git snapshot for Electrum to configure and install it:
 
     $ cd ~
-    $ git clone https://github.com/pooler/electrum-ltc-server.git
-    $ cd electrum-ltc-server
+    $ git clone https://github.com/beyondcoin-project/electrum-bynd-server.git
+    $ cd electrum-bynd-server
     $ sudo apt-get install python-setuptools
     $ sudo ./configure
     $ sudo python setup.py install
@@ -211,8 +211,8 @@ It's recommended that you fetch a pre-processed leveldb from the net.
 The "configure" script above will offer you to download a database with pruning limit 100.
 
 You can fetch recent copies of electrum leveldb databases with different pruning limits
-and further instructions from the Electrum-LTC full archival server foundry at:
-http://foundry.electrum-ltc.org/leveldb-dump/
+and further instructions from the Electrum-BYND full archival server foundry at:
+http://foundry.electrum-bynd.com/leveldb-dump/
 
 
 Alternatively, if you have the time and nerve, you can import the blockchain yourself.
@@ -280,11 +280,11 @@ in case you need to restore them.
 
 ### Step 9. Configure Electrum server
 
-Electrum reads a config file (/etc/electrum-ltc.conf) when starting up. This
-file includes the database setup, litecoind RPC setup, and a few other
+Electrum reads a config file (/etc/electrum-bynd.conf) when starting up. This
+file includes the database setup, beyondcoind RPC setup, and a few other
 options.
 
-The "configure" script listed above will create a config file at /etc/electrum-ltc.conf
+The "configure" script listed above will create a config file at /etc/electrum-bynd.conf
 which you can edit to modify the settings.
 
 Go through the config options and set them to your liking.
@@ -296,12 +296,12 @@ Electrum server currently needs quite a few file handles to use leveldb. It also
 file handles for each connection made to the server. It's good practice to increase the
 open files limit to 128k.
 
-The "configure" script will take care of this and ask you to create a user for running electrum-ltc-server.
-If you're using the user `litecoin` to run electrum and have added it as shown in this document, run
+The "configure" script will take care of this and ask you to create a user for running electrum-bynd-server.
+If you're using the user `beyondcoin` to run electrum and have added it as shown in this document, run
 the following code to add the limits to your /etc/security/limits.conf:
 
-     echo "litecoin hard nofile 131072" >> /etc/security/limits.conf
-     echo "litecoin soft nofile 131072" >> /etc/security/limits.conf
+     echo "beyondcoin hard nofile 131072" >> /etc/security/limits.conf
+     echo "beyondcoin soft nofile 131072" >> /etc/security/limits.conf
 
 If you are on Debian > 8.0 Jessie or another distribution based on it, you also need to add these lines in /etc/pam.d/common-session and /etc/pam.d/common-session-noninteractive otherwise the limits in /etc/security/limits.conf will not work:
 
@@ -310,30 +310,30 @@ If you are on Debian > 8.0 Jessie or another distribution based on it, you also 
 
 Check if the limits are changed either by logging with the user configured to run Electrum server as. Example:
 
-    su - litecoin
+    su - beyondcoin
     ulimit -n
 
 Or if you use sudo and the user is added to sudoers group:
 
-    sudo -u litecoin -i ulimit -n
+    sudo -u beyondcoin -i ulimit -n
 
 
 Two more things for you to consider:
 
 1. To increase privacy of transactions going through your server
-   you may want to close litecoind for incoming connections and connect outbound only. Most servers do run
+   you may want to close beyondcoind for incoming connections and connect outbound only. Most servers do run
    full nodes with open incoming connections though.
 
-2. Consider restarting litecoind (together with electrum-ltc-server) on a weekly basis to clear out unconfirmed
+2. Consider restarting beyondcoind (together with electrum-bynd-server) on a weekly basis to clear out unconfirmed
    transactions from the local the memory pool which did not propagate over the network.
 
 ### Step 11. (Finally!) Run Electrum server
 
 The magic moment has come: you can now start your Electrum server as root (it will su to your unprivileged user):
 
-    # electrum-ltc-server start
+    # electrum-bynd-server start
 
-Note: If you want to run the server without installing it on your system, just run 'run_electrum_ltc_server" as the
+Note: If you want to run the server without installing it on your system, just run 'run_electrum_bynd_server" as the
 unprivileged user.
 
 You should see this in the log file:
@@ -348,15 +348,15 @@ The important pieces to you are at the end. In this example, the server has to c
 
 If you want to stop Electrum server, use the 'stop' command:
 
-    # electrum-ltc-server stop
+    # electrum-bynd-server stop
 
 
-If your system supports it, you may add electrum-ltc-server to the /etc/init.d directory.
+If your system supports it, you may add electrum-bynd-server to the /etc/init.d directory.
 This will ensure that the server is started and stopped automatically, and that the database is closed
 safely whenever your machine is rebooted.
 
-    # ln -s `which electrum-ltc-server` /etc/init.d/electrum-ltc-server
-    # update-rc.d electrum-ltc-server defaults
+    # ln -s `which electrum-bynd-server` /etc/init.d/electrum-bynd-server
+    # update-rc.d electrum-bynd-server defaults
 
 ### Step 12. Test the Electrum server
 
@@ -369,16 +369,4 @@ or hostname and the port. Press 'Ok' and the client will disconnect from the
 current server and connect to your new Electrum server. You should see your
 addresses and transactions history. You can see the number of blocks and
 response time in the server selection window. You should send/receive some
-litecoins to confirm that everything is working properly.
-
-### Step 13. Join us on IRC, subscribe to the server thread
-
-Say hi to the dev crew, other server operators, and fans on
-irc.freenode.net #electrum-ltc and we'll try to congratulate you
-on supporting the community by running an Electrum-LTC node.
-
-If you're operating a public Electrum-LTC server please subscribe
-to the following mailing list:
-https://groups.google.com/forum/#!forum/electrum-ltc-server
-It'll contain announcements about important updates to Electrum-LTC
-server required for a smooth user experience.
+beyondcoins to confirm that everything is working properly.

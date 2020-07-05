@@ -112,7 +112,7 @@ class BlockchainProcessor(Processor):
         while not self.shared.stopped():
             self.main_iteration()
             if self.shared.paused():
-                print_log("litecoind is responding")
+                print_log("beyondcoind is responding")
                 self.shared.unpause()
             time.sleep(10)
 
@@ -160,12 +160,12 @@ class BlockchainProcessor(Processor):
                 r = load(response)
                 response.close()
             except:
-                print_log("cannot reach litecoind...")
+                print_log("cannot reach beyondcoind...")
                 self.wait_on_bitcoind()
             else:
                 if r['error'] is not None:
                     if r['error'].get('code') == -28:
-                        print_log("litecoind still warming up...")
+                        print_log("beyondcoind still warming up...")
                         self.wait_on_bitcoind()
                         continue
                     raise BaseException(r['error'])
@@ -575,7 +575,7 @@ class BlockchainProcessor(Processor):
                     #  it's considered an error message
                     message = error["message"]
                     if "non-mandatory-script-verify-flag" in message:
-                        result = "Your client produced a transaction that is not accepted by the Litecoin network any more. Please upgrade to Electrum 2.5.1 or newer\n"
+                        result = "Your client produced a transaction that is not accepted by the Beyondcoin network any more. Please upgrade to Electrum 2.5.1 or newer\n"
                     else:
                         result = "The transaction was rejected by network rules.(" + message + ")\n" \
                             "[" + params[0] + "]"
@@ -625,13 +625,13 @@ class BlockchainProcessor(Processor):
                 r = load(response)
                 response.close()
             except:
-                logger.error("litecoind error (getfullblock)")
+                logger.error("beyondcoind error (getfullblock)")
                 self.wait_on_bitcoind()
                 continue
             try:
                 rawtxdata = []
                 for ir in r:
-                    assert ir['error'] is None, "Error: make sure you run litecoind with txindex=1; use -reindex if needed."
+                    assert ir['error'] is None, "Error: make sure you run beyondcoind with txindex=1; use -reindex if needed."
                     rawtxdata.append(ir['result'])
             except BaseException as e:
                 logger.error(str(e))

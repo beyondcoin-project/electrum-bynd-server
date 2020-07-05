@@ -240,7 +240,7 @@ import logging
 import logging.handlers
 
 logging.basicConfig(format="%(asctime)-11s %(message)s", datefmt="[%d/%m/%Y-%H:%M:%S]")
-logger = logging.getLogger('electrum-ltc')
+logger = logging.getLogger('electrum-bynd')
 
 def init_logger():
     logger.setLevel(logging.INFO)

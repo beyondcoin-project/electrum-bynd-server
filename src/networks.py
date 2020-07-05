@@ -11,14 +11,14 @@ params = {
         'script_address': 196,
         'genesis_hash': '000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943'
     },
-    'litecoin_main': {
-        'pubkey_address': 48,
+    'beyondcoin_main': {
+        'pubkey_address': 25,
         'script_address': 5,
-        'genesis_hash': '12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2'
+        'genesis_hash': '0a9e3b5fce3aee6e04f06dfd6ad380a6c0f9d8420f53a4ca97845756ee5d56e7'
     },
-    'litecoin_test': {
-        'pubkey_address': 111,
+    'beyondcoin_test': {
+        'pubkey_address': 85,
         'script_address': 196,
-        'genesis_hash': 'f5ae71e26c74beacc88382716aced69cddf3dffff24f384e1808905e0188f68f'
+        'genesis_hash': 'e4c23a189582c0a7719569717bfeb59b478a20367c5b36dd6fb18b7df4ecab51'
     }
 }

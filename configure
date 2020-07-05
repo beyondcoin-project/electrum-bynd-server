@@ -12,7 +12,7 @@ fi
 source_dir=$(cd "$(dirname "${BASH_SOURCE[0]}" )"; pwd)
 
 
-electrum_config="/etc/electrum-ltc.conf"
+electrum_config="/etc/electrum-bynd.conf"
 function read_config()
 {
     text=$1
@@ -26,7 +26,7 @@ function write_config()
 # create config file
 if [ ! -f $electrum_config ]; then
     echo "Creating config file"
-    cp $source_dir"/electrum-ltc.conf.sample" $electrum_config
+    cp $source_dir"/electrum-bynd.conf.sample" $electrum_config
 fi
 
 
@@ -53,7 +53,7 @@ fi
 
 
 # read path from config
-default_path="/var/electrum-ltc-server"
+default_path="/var/electrum-bynd-server"
 path=$(read_config "path")
 if ! [ "$path" ]; then
     read -p "Path for database (default: $default_path) " -r
@@ -66,7 +66,7 @@ if ! [ "$path" ]; then
 fi
 
 # read path from config
-default_logfile="/var/log/electrum-ltc.log"
+default_logfile="/var/log/electrum-bynd.log"
 logfile=$(read_config "logfile")
 if ! [ "$logfile" ]; then
     read -p "Path of logfile (default: $default_logfile) " -r
@@ -92,7 +92,7 @@ if [ ! -d $path ]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 	mkdir -p $path
-	wget -O - "http://foundry.electrum-ltc.org/leveldb-dump/electrum-fulltree-100-latest.tar.gz" | tar --extract --gunzip --strip-components 1 --directory $path --file -
+	wget -O - "http://foundry.electrum-bynd.org/leveldb-dump/electrum-fulltree-100-latest.tar.gz" | tar --extract --gunzip --strip-components 1 --directory $path --file -
     fi
 fi
 
@@ -110,13 +110,13 @@ chown $user:$user $logfile
 
 bitcoind_user=$(read_config "bitcoind_user")
 if ! [ "$bitcoind_user" ]; then
-    read -p "rpcuser (from your litecoin.conf file, leave empty for localhost): " -r
+    read -p "rpcuser (from your beyondcoin.conf file, leave empty for localhost): " -r
     write_config "bitcoind_user" $REPLY
 fi
 
 bitcoind_password=$(read_config "bitcoind_password")
 if ! [ "$bitcoind_password" ]; then
-    read -p "rpcpassword (from your litecoin.conf file, leave emtpy for localhost): " -r
+    read -p "rpcpassword (from your beyondcoin.conf file, leave emtpy for localhost): " -r
     write_config "bitcoind_password" $REPLY
 fi
 
@@ -125,4 +125,4 @@ fi
 echo "Configuration written to $electrum_config."
 echo "Please edit this file to finish the configuration."
 echo "If you have not done so, please run 'python setup.py install'"
-echo "Then, run 'electrum-ltc-server' to start the daemon"
+echo "Then, run 'electrum-bynd-server' to start the daemon"

@@ -34,13 +34,13 @@ import imp
 
 
 if os.path.dirname(os.path.realpath(__file__)) == os.getcwd():
-    imp.load_module('electrumltcserver', *imp.find_module('src'))
+    imp.load_module('electrumbyndserver', *imp.find_module('src'))
 
-from electrumltcserver import storage, networks, utils
-from electrumltcserver.processor import Dispatcher, print_log
-from electrumltcserver.server_processor import ServerProcessor
-from electrumltcserver.blockchain_processor import BlockchainProcessor
-from electrumltcserver.stratum_tcp import TcpServer
+from electrumbyndserver import storage, networks, utils
+from electrumbyndserver.processor import Dispatcher, print_log
+from electrumbyndserver.server_processor import ServerProcessor
+from electrumbyndserver.blockchain_processor import BlockchainProcessor
+from electrumbyndserver.stratum_tcp import TcpServer
 
 
 logging.basicConfig()
@@ -86,7 +86,7 @@ def create_config(filename=None):
     # set some defaults, which will be overwritten by the config file
     config.add_section('server')
     config.set('server', 'banner', 'Welcome to Electrum!')
-    config.set('server', 'banner_file', '/etc/electrum-ltc.banner')
+    config.set('server', 'banner_file', '/etc/electrum-bynd.banner')
     config.set('server', 'host', 'localhost')
     config.set('server', 'electrum_rpc_port', '8000')
     config.set('server', 'report_host', '')
@@ -98,12 +98,12 @@ def create_config(filename=None):
     config.set('server', 'ssl_keyfile', '')
     config.set('server', 'irc', 'no')
     config.set('server', 'irc_nick', '')
-    config.set('server', 'coin', 'litecoin')
+    config.set('server', 'coin', 'beyondcoin')
     config.set('server', 'donation_address', '')
     config.set('server', 'max_subscriptions', '10000')
 
     config.add_section('leveldb')
-    config.set('leveldb', 'path', '/dev/shm/electrum-ltc_db')
+    config.set('leveldb', 'path', '/dev/shm/electrum-bynd_db')
     config.set('leveldb', 'pruning_limit', '100')
     config.set('leveldb', 'reorg_limit', '100')
     config.set('leveldb', 'utxo_cache', str(64*1024*1024))
@@ -113,12 +113,12 @@ def create_config(filename=None):
 
     # set network parameters
     config.add_section('network')
-    config.set('network', 'type', 'litecoin_main')
+    config.set('network', 'type', 'beyondcoin_main')
 
     # try to find the config file in the default paths
     if not filename:
         for path in ('/etc/', ''):
-            filename = path + 'electrum-ltc.conf'
+            filename = path + 'electrum-bynd.conf'
             if os.path.isfile(filename):
                 break
 

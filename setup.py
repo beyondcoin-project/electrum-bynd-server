@@ -1,30 +1,30 @@
 from setuptools import setup
 
 setup(
-    name="electrum-ltc-server",
+    name="electrum-bynd-server",
     version="1.0",
-    scripts=['run_electrum_ltc_server.py','electrum-ltc-server'],
+    scripts=['run_electrum_bynd_server.py','electrum-bynd-server'],
     install_requires=['plyvel','jsonrpclib', 'irc >= 11, <=14.0'],
     package_dir={
-        'electrumltcserver':'src'
+        'electrumbyndserver':'src'
         },
     py_modules=[
-        'electrumltcserver.__init__',
-        'electrumltcserver.utils',
-        'electrumltcserver.storage',
-        'electrumltcserver.deserialize',
-        'electrumltcserver.networks',
-        'electrumltcserver.blockchain_processor',
-        'electrumltcserver.server_processor',
-        'electrumltcserver.processor',
-        'electrumltcserver.version',
-        'electrumltcserver.ircthread',
-        'electrumltcserver.stratum_tcp'
+        'electrumbyndserver.__init__',
+        'electrumbyndserver.utils',
+        'electrumbyndserver.storage',
+        'electrumbyndserver.deserialize',
+        'electrumbyndserver.networks',
+        'electrumbyndserver.blockchain_processor',
+        'electrumbyndserver.server_processor',
+        'electrumbyndserver.processor',
+        'electrumbyndserver.version',
+        'electrumbyndserver.ircthread',
+        'electrumbyndserver.stratum_tcp'
     ],
-    description="Litecoin Electrum Server",
+    description="Beyondcoin Electrum Server",
     author="Thomas Voegtlin",
     author_email="thomasv@electrum.org",
     license="MIT Licence",
-    url="https://github.com/pooler/electrum-ltc-server/",
-    long_description="""Server for the Electrum Lightweight Litecoin Wallet"""
+    url="https://github.com/beyondcoin-project/electrum-bynd-server/",
+    long_description="""Server for the Electrum Lightweight Beyondcoin Wallet"""
 )

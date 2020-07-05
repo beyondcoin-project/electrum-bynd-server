@@ -5,22 +5,22 @@ detailed information on how to configure your server.
 TLDR:
 $ sudo ./configure
 $ sudo python ./setup.py install
-$ electrum-ltc-server start
-$ electrum-ltc-server stop
+$ electrum-bynd-server start
+$ electrum-bynd-server stop
 
 
 Note: If you want to run the server without installing it on your
-system, just run 'run_electrum_ltc_server"
+system, just run 'run_electrum_bynd_server"
 
 
-1. Install and run litecoind.
+1. Install and run beyondcoind.
 ----------------------------
 
-You will need to run litecoind with the config option txindex=1. If you
-have not previously done so, you may need to reindex the litecoind
+You will need to run beyondcoind with the config option txindex=1. If you
+have not previously done so, you may need to reindex the beyondcoind
 blockchain
 
-Note: you cannot use a pruning litecoind.  A full litecoin node is
+Note: you cannot use a pruning beyondcoind.  A full beyondcoin node is
 required in order to know for each address if it has been
 used. Pruning occurs only at the level of the Electrum database.
 
@@ -32,14 +32,14 @@ You need to run the script as root:
 $ sudo ./configure
 
 It will:
- * create the configuration file in /etc/electrum-ltc.conf
+ * create the configuration file in /etc/electrum-bynd.conf
  * create a user that will run the daemon
- * optionally, download a fresh database from the Electrum-LTC Foundry.
+ * optionally, download a fresh database from the Electrum-BYND Foundry.
 
 If you choose not to use the Foundry, your server will have to build
 the database from scratch. This process can take several days. To
 speed it up, it is recommended to locate your database in shared
-memory, in electrum-ltc.conf: path = /run/shm/electrum-ltc_db
+memory, in electrum-bynd.conf: path = /run/shm/electrum-bynd_db
 
 Note: The 'configure' script does not configure SSL and IRC. You will
 need to manually edit the configuration file in order to enable SSL on
@@ -57,31 +57,31 @@ Note: You will need to redo this everytime you pull code from git.
 4. Using the server
 -------------------
 
-Use 'electrum-ltc-server' to start and stop the server:
+Use 'electrum-bynd-server' to start and stop the server:
 
-$ electrum-ltc-server <start|stop|restart|status|getinfo|peers|numpeers|sessions|numsessions|banner_update>
+$ electrum-bynd-server <start|stop|restart|status|getinfo|peers|numpeers|sessions|numsessions|banner_update>
 
 The server will write a log file in its database path.
 
 
-5. Add electrum-ltc-server to your system's services
+5. Add electrum-bynd-server to your system's services
 ----------------------------------------------------
 
-If your system supports it, you may add electrum-ltc-server to the
+If your system supports it, you may add electrum-bynd-server to the
 /etc/init.d directory. This will ensure that the server is started and
 stopped automatically, and that the database is closed safely whenever
 your machine is rebooted.
 
-# ln -s `which electrum-ltc-server` /etc/init.d/electrum-ltc-server
-# update-rc.d electrum-ltc-server defaults
+# ln -s `which electrum-bynd-server` /etc/init.d/electrum-bynd-server
+# update-rc.d electrum-bynd-server defaults
 
 
 
 6. Troubleshooting:
 -------------------
 
- * if your server or litecoind is killed because is uses too much
-   memory, configure litecoind to limit the number of connections
+ * if your server or beyondcoind is killed because is uses too much
+   memory, configure beyondcoind to limit the number of connections
 
  * if you see "Too many open files" errors, you may need to increase
    your user's File Descriptors limit. For this, see

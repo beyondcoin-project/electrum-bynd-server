@@ -286,7 +286,7 @@ class Storage(object):
     def listunspent(self, addr):
         key = self.address_to_key(addr)
         if key is None:
-            raise BaseException('Invalid Litecoin address', addr)
+            raise BaseException('Invalid Beyondcoin address', addr)
         out = []
         with self.db_utxo.lock:
             for k, v in self.db_utxo.db.iterator(start=key):

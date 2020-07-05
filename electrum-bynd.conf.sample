@@ -11,13 +11,13 @@ stratum_tcp_port = 50001
 #report_stratum_tcp_port = 50001
 #report_stratum_tcp_ssl_port = 50002
 banner = Welcome to Electrum!
-banner_file = /etc/electrum-ltc.banner
+banner_file = /etc/electrum-bynd.banner
 #irc = no
 #irc_nick = <yournickname>
 #irc_bind_ip = <external ip address>
 #ssl_certfile = /path/to/electrum-server.crt
 #ssl_keyfile = /path/to/electrum-server.key
-logfile = /var/log/electrum-ltc.log
+logfile = /var/log/electrum-bynd.log
 donation_address =
 
 [leveldb]
@@ -34,7 +34,7 @@ pruning_limit = 100
 
 [bitcoind]
 bitcoind_host = localhost
-bitcoind_port = 9332
-# user and password from litecoin.conf (not needed for localhost)
+bitcoind_port = 10332
+# user and password from beyondcoin.conf (not needed for localhost)
 #bitcoind_user =
 #bitcoind_password =
